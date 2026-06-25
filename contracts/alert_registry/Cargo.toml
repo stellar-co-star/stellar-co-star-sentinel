@@ -5,7 +5,9 @@ edition.workspace = true
 publish.workspace = true
 
 [lib]
-crate-type = ["cdylib"]
+# `rlib` so other contracts (e.g. risk_monitor) can import the typed client and
+# register this contract in their cross-contract integration tests.
+crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 soroban-sdk = { workspace = true }

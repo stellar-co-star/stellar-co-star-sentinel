@@ -1,0 +1,20 @@
+[package]
+name = "risk-monitor"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+soroban-sdk = { workspace = true }
+
+[dev-dependencies]
+soroban-sdk = { workspace = true, features = ["testutils"] }
+# Used only in tests to register a real alert_registry in the cross-contract
+# integration test environment.
+alert-registry = { path = "../alert_registry", features = ["testutils"] }
+
+[features]
+testutils = ["soroban-sdk/testutils"]
