@@ -11,14 +11,30 @@ It watches your lending positions on Blend, tells you how close you are to liqui
 
 This is not a yield vault. It is a risk layer for people who already have open borrow positions and want to stay informed before it is too late.
 
-- **Live demo:** **https://son-fawn.vercel.app**
-- **Demo video (1–2 min):** **▶️ https://youtu.be/gLwm4kT7ldg**
+- **Live demo:** **https://son-fawn.vercel.app** (or click **Try the live demo** — no wallet needed)
+- **Pitch deck:** **https://claude.ai/code/artifact/5584ed7b-6291-4e55-86af-11d4fd8c1d0f** (also in-repo: [`docs/pitch/`](docs/pitch/index.html))
+- **Demo video:** **▶️ https://youtu.be/gLwm4kT7ldg**
 
 ---
 
 ## Requirements checklist
 
-### Level 4 — Production MVP + real users
+### Level 5 — Growth, iteration & pitch
+
+| Requirement | Where |
+|---|---|
+| Product improvements (feature iteration) | [Demo Mode](#growth--product-iteration), onboarding checklist, hero social proof, RPC-retry stability |
+| Optimized onboarding | no-wallet **Demo Mode** + first-run overlay + on-chain progress checklist |
+| Improve UX/UI + stability | retry on transient RPC reads, live social proof, clearer demo/read-only states |
+| Professional pitch deck | [10-slide deck](https://claude.ai/code/artifact/5584ed7b-6291-4e55-86af-11d4fd8c1d0f) · [`docs/pitch/`](docs/pitch/index.html) |
+| Growth strategy + roadmap | [Growth & product iteration](#growth--product-iteration) |
+| User onboarding (form + Excel) | [User onboarding & feedback](#user-onboarding--feedback-google-form--excel) |
+| Active-usage proof | on-chain **Network Activity** (unique wallets / txs) — [`ActivityPanel`](apps/web/src/components/ActivityPanel.tsx) |
+| 20+ meaningful commits | 35+ on `main` |
+| Proof of 50+ users | _in progress — see [User onboarding](#user-onboarding--feedback-google-form--excel)_ |
+
+<details>
+<summary><b>Level 4 — Production MVP + real users</b></summary>
 
 | Requirement | Where |
 |---|---|
@@ -33,6 +49,8 @@ This is not a yield vault. It is a risk layer for people who already have open b
 | Tests (contracts + frontend) | 16 Rust + 28 Vitest = **44** ([test output](docs/screenshots/09-test-output.png)) |
 | Contract deployment address | `guardian` [`CCBOH4QO…MGTK`](https://stellar.expert/explorer/testnet/contract/CCBOH4QO4UQ5MR4EJV2VOWOGP3S5J2T5ZPXQHNXSJJKDTVYO7UKQMGTK) |
 | Tx hash for contract interaction | `protect` [`ceb5b5e2…0bbf1`](https://stellar.expert/explorer/testnet/tx/ceb5b5e2a151207c8a690371bde61edbb6fc6678978114ace628532f2ef0bbf1) — released a 2 XLM reserve |
+
+</details>
 
 <details>
 <summary><b>Level 3 — Advanced contracts + production-ready dApp</b></summary>
@@ -68,6 +86,36 @@ This is not a yield vault. It is a risk layer for people who already have open b
 | Contract-call tx hash | [`c67251c0…727a`](https://stellar.expert/explorer/testnet/tx/c67251c00f47796851b382e2091aa306e64f80fa3e299b3b989856c6f826727a) |
 
 </details>
+
+---
+
+## Growth & product iteration
+
+Level 5 is about scaling and iterating. These are the product improvements shipped this phase, each targeting a specific onboarding / retention / trust gap, with the commit that delivered it:
+
+| Improvement | Why (gap it closes) | Commit |
+|---|---|---|
+| **Demo Mode** — explore a live sample account read-only, no wallet | The biggest onboarding blocker was "install a wallet + fund it" before you can see any value. Demo Mode lets anyone experience the full product instantly, then convert. | [`37f13a5`](https://github.com/stellar-co-star/stellar-co-star-stellar-co-star-sentinel/commit/37f13a5) |
+| **On-chain onboarding checklist** + **live hero social proof** | New users didn't know what to do next; visitors had no proof others use it. The checklist reads setup progress from chain; the hero shows live wallet/tx counts. | [`a4c8c95`](https://github.com/stellar-co-star/stellar-co-star-stellar-co-star-sentinel/commit/a4c8c95) |
+| **RPC-retry stability** on all contract reads | Transient RPC blips surfaced as errors during heavier usage. Reads now retry with backoff. | [`8be26fa`](https://github.com/stellar-co-star/stellar-co-star-stellar-co-star-sentinel/commit/8be26fa) |
+
+**Next phase — driven by the feedback we collect** (see the [Google Form](#user-onboarding--feedback-google-form--excel)). Once responses are in we prioritise from the ratings; the current backlog: Telegram/email alert bot (the free growth wedge), a permissionless keeper so protection fires automatically, Reflector oracle for on-chain health factors, and real Blend repay inside `protect`. Each will land as its own commit linked back here.
+
+### Growth strategy
+
+Lead with **free liquidation alerts** so every Blend borrower has a reason to show up, remove friction with **Demo Mode**, then convert to the paid **Guardian**. Distribute through the Blend community and Stellar wallets; open a **permissionless keeper** network so protection scales without us in the loop; and offer the risk + guardian **SDK** for other Soroban lending protocols to embed. Full narrative in the [pitch deck](https://claude.ai/code/artifact/5584ed7b-6291-4e55-86af-11d4fd8c1d0f).
+
+---
+
+## User onboarding & feedback (Google Form + Excel)
+
+We collect user details and product ratings through a Google Form, export the responses to a spreadsheet, and analyse them to drive the [next-phase improvements](#growth--product-iteration).
+
+- **Sign-up / feedback form:** _`<GOOGLE_FORM_LINK>`_ — collects wallet address, name, email and a product rating.
+- **Exported responses (Excel):** _`docs/feedback/responses.xlsx`_ — attached once the first cohort is in.
+- **Active-usage proof:** the in-app **Network Activity** dashboard shows the live unique-wallet and transaction counts, read directly from the deployed contracts' events — verifiable on-chain, not self-reported.
+
+> Onboarding 50+ testnet users is in progress. The infrastructure that proves it (on-chain unique-wallet counting + the form + this Excel export) is built and live; the counts update automatically as users interact.
 
 ---
 
@@ -307,6 +355,14 @@ and `VITE_RESERVE_TOKEN_ID` in `apps/web/.env` (the deployed ids are the default
 ---
 
 ## Screenshots
+
+### Demo Mode & pitch deck (Level 5)
+
+Explore the full product with no wallet, and the pitch deck's title / architecture slides.
+
+| Demo Mode (read-only) | Pitch deck |
+|---|---|
+| ![Demo mode](docs/screenshots/15-demo-mode.png) | ![Pitch deck](docs/screenshots/17-pitch-title.png) |
 
 ### Liquidation Guardian (Level 4)
 
