@@ -12,7 +12,7 @@ It watches your lending positions on Blend, tells you how close you are to liqui
 This is not a yield vault. It is a risk layer for people who already have open borrow positions and want to stay informed before it is too late.
 
 - **Live demo:** **https://son-fawn.vercel.app** (or click **Try the live demo** — no wallet needed)
-- **Pitch deck:** **https://claude.ai/code/artifact/5584ed7b-6291-4e55-86af-11d4fd8c1d0f** (also in-repo: [`docs/pitch/`](docs/pitch/index.html))
+- **Pitch deck:** **https://son-fawn.vercel.app/pitch.html** (10-slide deck; source in [`docs/pitch/`](docs/pitch/index.html))
 - **Demo video:** **▶️ https://youtu.be/gLwm4kT7ldg**
 
 ---
@@ -26,7 +26,7 @@ This is not a yield vault. It is a risk layer for people who already have open b
 | Product improvements (feature iteration) | [Demo Mode](#growth--product-iteration), onboarding checklist, hero social proof, RPC-retry stability |
 | Optimized onboarding | no-wallet **Demo Mode** + first-run overlay + on-chain progress checklist |
 | Improve UX/UI + stability | retry on transient RPC reads, live social proof, clearer demo/read-only states |
-| Professional pitch deck | [10-slide deck](https://claude.ai/code/artifact/5584ed7b-6291-4e55-86af-11d4fd8c1d0f) · [`docs/pitch/`](docs/pitch/index.html) |
+| Professional pitch deck | [10-slide deck](https://son-fawn.vercel.app/pitch.html) · [`docs/pitch/`](docs/pitch/index.html) |
 | Growth strategy + roadmap | [Growth & product iteration](#growth--product-iteration) |
 | User onboarding (form + Excel) | [User onboarding & feedback](#user-onboarding--feedback-google-form--excel) |
 | Active-usage proof | on-chain **Network Activity** (unique wallets / txs) — [`ActivityPanel`](apps/web/src/components/ActivityPanel.tsx) |
@@ -103,7 +103,7 @@ Level 5 is about scaling and iterating. These are the product improvements shipp
 
 ### Growth strategy
 
-Lead with **free liquidation alerts** so every Blend borrower has a reason to show up, remove friction with **Demo Mode**, then convert to the paid **Guardian**. Distribute through the Blend community and Stellar wallets; open a **permissionless keeper** network so protection scales without us in the loop; and offer the risk + guardian **SDK** for other Soroban lending protocols to embed. Full narrative in the [pitch deck](https://claude.ai/code/artifact/5584ed7b-6291-4e55-86af-11d4fd8c1d0f).
+Lead with **free liquidation alerts** so every Blend borrower has a reason to show up, remove friction with **Demo Mode**, then convert to the paid **Guardian**. Distribute through the Blend community and Stellar wallets; open a **permissionless keeper** network so protection scales without us in the loop; and offer the risk + guardian **SDK** for other Soroban lending protocols to embed. Full narrative in the [pitch deck](https://son-fawn.vercel.app/pitch.html).
 
 ---
 

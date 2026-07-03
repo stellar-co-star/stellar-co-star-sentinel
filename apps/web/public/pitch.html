@@ -1,0 +1,356 @@
+<title>Sentinel — Pitch Deck</title>
+<style>
+  :root {
+    --bg: #0a0b0d;
+    --surface: #14161a;
+    --surface-2: #1b1e23;
+    --line: #262a30;
+    --line-2: #333941;
+    --ink: #f3f5f7;
+    --ink-2: #aeb4bd;
+    --ink-3: #767d87;
+    --gold: #fdda24;
+    --gold-dim: #c9ab1c;
+    --teal: #22c3d6;
+    --mint: #3fd07f;
+    --amber: #ffb224;
+    --red: #f0575c;
+    --ff: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-snap-type: y proximity; scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--ff);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+
+  /* Progress + counter */
+  .progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--gold); z-index: 100; transition: width 120ms linear; }
+  .counter { position: fixed; bottom: 22px; left: 26px; z-index: 100; font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; color: var(--ink-3); }
+  .counter b { color: var(--gold); }
+  .brandmark { position: fixed; top: 20px; right: 26px; z-index: 100; display: flex; align-items: center; gap: 8px; font-weight: 800; letter-spacing: -0.02em; font-size: 15px; }
+  .brandmark .dot { width: 22px; height: 22px; border-radius: 6px; background: var(--gold); display: grid; place-items: center; }
+
+  .deck { }
+  .slide {
+    min-height: 100svh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(28px, 6vw, 90px);
+    max-width: 1120px;
+    margin: 0 auto;
+    border-bottom: 1px solid transparent;
+    position: relative;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .eyebrow::before { content: ""; width: 26px; height: 1px; background: var(--gold); opacity: 0.6; }
+
+  h1 { font-size: clamp(38px, 8vw, 82px); font-weight: 850; letter-spacing: -0.04em; line-height: 1.02; text-wrap: balance; }
+  h2 { font-size: clamp(30px, 5.2vw, 56px); font-weight: 820; letter-spacing: -0.03em; line-height: 1.06; text-wrap: balance; }
+  h3 { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; }
+  .lead { font-size: clamp(17px, 2.3vw, 22px); color: var(--ink-2); max-width: 60ch; line-height: 1.55; margin-top: 22px; }
+  .muted { color: var(--ink-2); }
+  strong.hi { color: var(--ink); font-weight: 650; }
+  .gold { color: var(--gold); }
+  .mono { font-family: var(--mono); }
+  em { font-style: normal; color: var(--gold); }
+
+  .pillrow { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 34px; }
+  .pill { font-family: var(--mono); font-size: 12px; letter-spacing: 0.03em; padding: 7px 13px; border: 1px solid var(--line-2); border-radius: 999px; color: var(--ink-2); display: inline-flex; gap: 7px; align-items: center; }
+  .pill .d { width: 7px; height: 7px; border-radius: 50%; }
+
+  .grid { display: grid; gap: 16px; margin-top: 42px; }
+  .g2 { grid-template-columns: repeat(2, 1fr); }
+  .g3 { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 720px) { .g2, .g3 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 26px; }
+  .card .k { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+  .card h3 { margin: 14px 0 8px; }
+  .card p { color: var(--ink-2); font-size: 15px; line-height: 1.6; }
+  .card .n { font-size: 20px; font-weight: 800; }
+
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 40px; }
+  @media (max-width: 720px) { .metrics { grid-template-columns: repeat(2, 1fr); } }
+  .metric { border-left: 2px solid var(--line-2); padding-left: 16px; }
+  .metric .v { font-size: clamp(28px, 4vw, 40px); font-weight: 850; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .metric .l { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-top: 6px; }
+
+  /* Architecture flow */
+  .flow { display: flex; align-items: stretch; gap: 12px; margin-top: 42px; flex-wrap: wrap; }
+  .node { flex: 1 1 200px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; position: relative; }
+  .node .tag { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; padding: 3px 8px; border-radius: 6px; display: inline-block; margin-bottom: 12px; }
+  .node h3 { font-size: 16px; }
+  .node p { color: var(--ink-2); font-size: 13.5px; line-height: 1.55; margin-top: 6px; }
+  .node .addr { font-family: var(--mono); font-size: 11px; color: var(--ink-3); margin-top: 12px; word-break: break-all; }
+  .arrow { align-self: center; color: var(--ink-3); font-family: var(--mono); font-size: 22px; flex: 0 0 auto; }
+  @media (max-width: 720px) { .arrow { transform: rotate(90deg); } }
+
+  .list { margin-top: 34px; display: flex; flex-direction: column; gap: 18px; }
+  .li { display: grid; grid-template-columns: 34px 1fr; gap: 16px; align-items: start; }
+  .li .num { font-family: var(--mono); font-size: 13px; color: var(--gold); border: 1px solid var(--line-2); border-radius: 8px; width: 34px; height: 34px; display: grid; place-items: center; }
+  .li h3 { font-size: 17px; }
+  .li p { color: var(--ink-2); font-size: 15px; margin-top: 4px; line-height: 1.55; max-width: 62ch; }
+
+  .foot { display: flex; flex-wrap: wrap; gap: 12px 26px; margin-top: 44px; font-family: var(--mono); font-size: 13px; }
+  .foot a { color: var(--gold); text-decoration: none; border-bottom: 1px solid transparent; }
+  .foot a:hover, .foot a:focus-visible { border-bottom-color: var(--gold); outline: none; }
+
+  .kicker { font-size: clamp(20px, 3vw, 30px); font-weight: 750; letter-spacing: -0.02em; line-height: 1.25; text-wrap: balance; max-width: 22ch; }
+
+  .timeline { margin-top: 40px; display: flex; flex-direction: column; }
+  .phase { display: grid; grid-template-columns: 130px 1fr; gap: 20px; padding: 18px 0; border-top: 1px solid var(--line); align-items: baseline; }
+  @media (max-width: 640px) { .phase { grid-template-columns: 1fr; gap: 6px; } }
+  .phase .when { font-family: var(--mono); font-size: 13px; letter-spacing: 0.04em; }
+  .phase .what { color: var(--ink-2); font-size: 15px; line-height: 1.55; }
+  .phase .what b { color: var(--ink); font-weight: 650; }
+  .badge-done { color: var(--mint); }
+  .badge-now { color: var(--gold); }
+  .badge-next { color: var(--ink-3); }
+
+  a.focusable:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+</style>
+
+<div class="progress" id="progress"></div>
+<div class="brandmark">
+  <span class="dot"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="#000"/><path d="M9 12l2 2 4-4" stroke="#fdda24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  Sentinel
+</div>
+<div class="counter"><b id="cur">01</b> / 10</div>
+
+<div class="deck">
+
+  <!-- 01 · Title -->
+  <section class="slide">
+    <div class="eyebrow">Sentinel · Blue Belt Pitch</div>
+    <h1>Stop the liquidation<br>before it happens.</h1>
+    <p class="lead">A non-custodial risk layer for Blend borrowers on Stellar. Sentinel warns you <em>before</em> your position is liquidated — and, with your permission, acts to protect it.</p>
+    <div class="pillrow">
+      <span class="pill"><span class="d" style="background:var(--mint)"></span>Live on Stellar Testnet</span>
+      <span class="pill"><span class="d" style="background:var(--gold)"></span>3 Soroban contracts deployed</span>
+      <span class="pill"><span class="d" style="background:var(--teal)"></span>44 tests · CI/CD green</span>
+    </div>
+    <div class="foot">
+      <a class="focusable" href="https://son-fawn.vercel.app" target="_blank" rel="noreferrer">▸ son-fawn.vercel.app</a>
+      <a class="focusable" href="https://github.com/stellar-co-star/stellar-co-star-stellar-co-star-sentinel" target="_blank" rel="noreferrer">▸ github.com/stellar-co-star/stellar-co-star-stellar-co-star-sentinel</a>
+    </div>
+  </section>
+
+  <!-- 02 · Problem -->
+  <section class="slide">
+    <div class="eyebrow">01 — The problem</div>
+    <h2>Borrowers get liquidated for two reasons. They stack.</h2>
+    <div class="grid g2">
+      <div class="card">
+        <div class="k">Reason one</div>
+        <h3>No warning</h3>
+        <p>Lending markets liquidate the instant a position crosses the line. Most people find out <strong class="hi">after</strong> the penalty is already taken out of their collateral.</p>
+      </div>
+      <div class="card">
+        <div class="k">Reason two</div>
+        <h3>Can't act in time</h3>
+        <p>Even when you see it coming, adding collateral means moving money from a bank or exchange. That takes hours. Markets move in seconds — so a position you could have saved gets taken apart by a bot.</p>
+      </div>
+    </div>
+    <p class="lead">The result is a brutal, avoidable wealth transfer from ordinary borrowers to liquidation bots.</p>
+  </section>
+
+  <!-- 03 · Solution -->
+  <section class="slide">
+    <div class="eyebrow">02 — The solution</div>
+    <h2>Monitor. Warn. Protect.</h2>
+    <p class="lead">One layer that closes both gaps — read-only to watch, opt-in to act, never custodial.</p>
+    <div class="grid g3">
+      <div class="card">
+        <div class="k" style="color:var(--teal)">Monitor</div>
+        <h3>Read your position</h3>
+        <p>Live Blend positions and pool rates straight from Soroban RPC. No custody, no signing to read.</p>
+      </div>
+      <div class="card">
+        <div class="k" style="color:var(--amber)">Warn</div>
+        <h3>Classify the risk</h3>
+        <p>Set an on-chain warning threshold; the Risk Monitor classifies your health factor Safe / Warning / Breached in real time.</p>
+      </div>
+      <div class="card">
+        <div class="k" style="color:var(--mint)">Protect</div>
+        <h3>Act before liquidation</h3>
+        <p>Fund a reserve in the Guardian. On breach it releases the reserve to you to defend the position — non-custodial by construction.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · How it works -->
+  <section class="slide">
+    <div class="eyebrow">03 — How it works</div>
+    <h2>Three contracts that compose on-chain.</h2>
+    <div class="flow">
+      <div class="node">
+        <span class="tag" style="background:rgba(34,195,214,0.14);color:var(--teal)">alert_registry</span>
+        <h3>Thresholds</h3>
+        <p>Per-user warning levels, stored on-chain with events.</p>
+        <div class="addr">CAMPKYYY…PFNWV</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="node">
+        <span class="tag" style="background:rgba(255,178,36,0.14);color:var(--amber)">risk_monitor</span>
+        <h3>Cross-contract risk</h3>
+        <p>Reads the registry via <span class="mono">invoke_contract</span>, classifies, emits alerts.</p>
+        <div class="addr">CCLHYNH4…GA5R</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="node">
+        <span class="tag" style="background:rgba(63,208,127,0.14);color:var(--mint)">guardian</span>
+        <h3>Protection</h3>
+        <p>Holds an XLM reserve; releases it on breach. Keeper-triggerable, never redirectable.</p>
+        <div class="addr">CCBOH4QO…MGTK</div>
+      </div>
+    </div>
+    <p class="lead">Every mutating call streams typed events; the dashboard reads it all over RPC and explains it. Reads are simulations, writes are signed by the user's own wallet.</p>
+  </section>
+
+  <!-- 05 · Why Stellar -->
+  <section class="slide">
+    <div class="eyebrow">04 — Why Stellar</div>
+    <h2>This is only really possible here.</h2>
+    <div class="grid g2">
+      <div class="card">
+        <div class="k">Anchors + SEP</div>
+        <h3>A real fiat bridge</h3>
+        <p>SEP-10/24/6/31 give a regulated path between bank money and on-chain assets, with MoneyGram, Circle and regional anchors already live. "Top up collateral from your card before you get liquidated" is only believable where that bridge exists.</p>
+      </div>
+      <div class="card">
+        <div class="k">Soroban</div>
+        <h3>Cheap + fast enough to act</h3>
+        <p>~5-second ledgers and sub-cent fees mean we can monitor constantly and take small protective moves without gas making it absurd.</p>
+      </div>
+      <div class="card">
+        <div class="k">Native USDC + DEX</div>
+        <h3>Route to the cheapest fix</h3>
+        <p>Native USDC, path payments and the built-in DEX let protection swap and route collateral atomically.</p>
+      </div>
+      <div class="card">
+        <div class="k">Ecosystem</div>
+        <h3>Blend + Reflector</h3>
+        <p>The largest Soroban lending market to build on, and a decentralized oracle for prices.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 · Traction -->
+  <section class="slide">
+    <div class="eyebrow">05 — Traction</div>
+    <h2>Not slideware. It's live.</h2>
+    <div class="metrics">
+      <div class="metric"><div class="v">3</div><div class="l">Contracts on testnet</div></div>
+      <div class="metric"><div class="v">44</div><div class="l">Tests passing</div></div>
+      <div class="metric"><div class="v">100%</div><div class="l">Non-custodial</div></div>
+      <div class="metric"><div class="v">L4</div><div class="l">Guardian MVP shipped</div></div>
+    </div>
+    <p class="lead">Deployed contracts, a CI/CD pipeline, a mobile-responsive dashboard, real-time event streaming, an on-chain analytics view, and a no-wallet demo mode — all shipped and verifiable on Stellar Expert.</p>
+    <div class="pillrow">
+      <span class="pill"><span class="d" style="background:var(--mint)"></span>Guardian protect tx: ceb5b5e2…0bbf1</span>
+      <span class="pill"><span class="d" style="background:var(--teal)"></span>Cross-contract assess: 2d442bbf…cb438</span>
+    </div>
+  </section>
+
+  <!-- 07 · Market -->
+  <section class="slide">
+    <div class="eyebrow">06 — Market opportunity</div>
+    <h2>Every leveraged borrower is a customer.</h2>
+    <p class="lead">Blend is the largest lending protocol on Stellar — <strong class="hi">$80M+ TVL</strong> as of early 2026 — running on immutable Soroban contracts, with no early-warning layer on top of it today.</p>
+    <div class="grid g3">
+      <div class="card"><div class="k">Wedge</div><p>Liquidation alerts for every Blend borrower — the free hook.</p></div>
+      <div class="card"><div class="k">Expand</div><p>Generalize to any Soroban lending market, not just Blend.</p></div>
+      <div class="card"><div class="k">Deepen</div><p>Fiat-to-safety rails via anchors — a market only Stellar can serve at scale.</p></div>
+    </div>
+  </section>
+
+  <!-- 08 · Growth -->
+  <section class="slide">
+    <div class="eyebrow">07 — Growth strategy</div>
+    <h2>Free alerts in. Protection out.</h2>
+    <div class="list">
+      <div class="li"><div class="num">01</div><div><h3>Lead with free alerts</h3><p>Every Blend borrower has a reason to show up. Alerts are the top of funnel; the Guardian is what they pay for.</p></div></div>
+      <div class="li"><div class="num">02</div><div><h3>Zero-friction demo mode</h3><p>Anyone can explore the live product against a real sample account with no wallet — then convert to their own.</p></div></div>
+      <div class="li"><div class="num">03</div><div><h3>Permissionless keepers</h3><p>Anyone can run the automation bot and earn a fee, so protection scales without us in the loop.</p></div></div>
+      <div class="li"><div class="num">04</div><div><h3>Distribution + SDK</h3><p>Grow through the Blend community and Stellar wallets; let other protocols embed the risk + guardian SDK.</p></div></div>
+    </div>
+  </section>
+
+  <!-- 09 · Roadmap -->
+  <section class="slide">
+    <div class="eyebrow">08 — Roadmap</div>
+    <h2>From MVP to a safety rail for Stellar DeFi.</h2>
+    <div class="timeline">
+      <div class="phase"><div class="when badge-done">✓ Shipped</div><div class="what"><b>Monitor + Guardian MVP.</b> 3 contracts, cross-contract risk, non-custodial protection, live dashboard, CI/CD.</div></div>
+      <div class="phase"><div class="when badge-now">◆ Now</div><div class="what"><b>Growth + iteration.</b> Onboard users, demo mode, onboarding funnel, stability, feedback-driven improvements.</div></div>
+      <div class="phase"><div class="when badge-next">Next</div><div class="what"><b>Automation + oracle.</b> Permissionless keeper network, Reflector price feeds, real Blend repay on protect, security audit.</div></div>
+      <div class="phase"><div class="when badge-next">Then</div><div class="what"><b>Fiat-to-safety.</b> Anchor partnerships (SEP-24/6/31) to top up reserves from fiat before liquidation.</div></div>
+      <div class="phase"><div class="when badge-next">Vision</div><div class="what"><b>Mainnet.</b> Audited protection layer for any Soroban lending market, and a community-owned protection pool.</div></div>
+    </div>
+  </section>
+
+  <!-- 10 · Close -->
+  <section class="slide">
+    <div class="eyebrow">Sentinel</div>
+    <div class="kicker gold">Liquidation protection should be a normal building block on Stellar.</div>
+    <p class="lead">We built the layer that warns you before it's too late and acts to protect you. Live, non-custodial, and verifiable on-chain today.</p>
+    <div class="foot">
+      <a class="focusable" href="https://son-fawn.vercel.app" target="_blank" rel="noreferrer">▸ Live demo — son-fawn.vercel.app</a>
+      <a class="focusable" href="https://github.com/stellar-co-star/stellar-co-star-stellar-co-star-sentinel" target="_blank" rel="noreferrer">▸ Code — github.com/stellar-co-star/stellar-co-star-stellar-co-star-sentinel</a>
+    </div>
+    <div class="pillrow">
+      <span class="pill"><span class="d" style="background:var(--gold)"></span>Built on Stellar + Blend + Soroban</span>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const prog = document.getElementById('progress');
+  const cur = document.getElementById('cur');
+  function onScroll() {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    prog.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+    let idx = 0;
+    const mid = window.scrollY + window.innerHeight / 2;
+    slides.forEach((s, i) => { if (s.offsetTop <= mid) idx = i; });
+    cur.textContent = String(idx + 1).padStart(2, '0');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'PageDown') {
+      e.preventDefault();
+      const mid = window.scrollY + window.innerHeight / 2;
+      const next = slides.find((s) => s.offsetTop > mid);
+      (next || slides[slides.length - 1]).scrollIntoView();
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault();
+      const prev = [...slides].reverse().find((s) => s.offsetTop < window.scrollY - 5);
+      (prev || slides[0]).scrollIntoView();
+    }
+  });
+</script>
