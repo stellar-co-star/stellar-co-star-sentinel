@@ -24,6 +24,23 @@ import type { AppConfig } from './network.js';
 import { createRpcServer } from './network.js';
 import { InsufficientBalanceError } from './errors.js';
 
+/**
+ * Retry a flaky async op (transient RPC failures) with linear backoff.
+ * Keeps reads stable under load without surfacing every hiccup to the UI.
+ */
+async function withRetry<T>(fn: () => Promise<T>, attempts = 2): Promise<T> {
+  let lastErr: unknown;
+  for (let i = 0; i <= attempts; i++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastErr = err;
+      if (i < attempts) await new Promise((r) => setTimeout(r, 400 * (i + 1)));
+    }
+  }
+  throw lastErr instanceof Error ? lastErr : new Error('operation failed');
+}
+
 /** Threshold in basis points → human percent (12000 → 120). */
 export function bpsToPercent(bps: number): number {
   return bps / 100;
@@ -55,7 +72,7 @@ export async function readThreshold(config: AppConfig, user: string): Promise<nu
     .setTimeout(30)
     .build();
 
-  const sim = await server.simulateTransaction(tx);
+  const sim = await withRetry(() => server.simulateTransaction(tx));
   if (rpc.Api.isSimulationError(sim)) {
     throw new Error(sim.error);
   }
@@ -248,7 +265,7 @@ export async function assessRisk(
     .setTimeout(30)
     .build();
 
-  const sim = await server.simulateTransaction(tx);
+  const sim = await withRetry(() => server.simulateTransaction(tx));
   if (rpc.Api.isSimulationError(sim)) {
     throw new Error(sim.error);
   }
@@ -393,7 +410,7 @@ async function simulateView(
     .addOperation(op)
     .setTimeout(30)
     .build();
-  const sim = await server.simulateTransaction(tx);
+  const sim = await withRetry(() => server.simulateTransaction(tx));
   if (rpc.Api.isSimulationError(sim)) throw new Error(sim.error);
   return sim.result?.retval;
 }
