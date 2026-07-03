@@ -6,6 +6,8 @@ import { AlertRegistryPanel } from '../components/AlertRegistryPanel';
 import { RiskMonitorPanel } from '../components/RiskMonitorPanel';
 import { GuardianPanel } from '../components/GuardianPanel';
 import { ActivityPanel } from '../components/ActivityPanel';
+import { OnboardingChecklist } from '../components/OnboardingChecklist';
+import { HeroStats } from '../components/HeroStats';
 import { TestTransaction } from '../components/TestTransaction';
 import { FeedbackButton } from '../components/FeedbackButton';
 import { Onboarding, useOnboarding } from '../components/Onboarding';
@@ -51,6 +53,7 @@ export function DashboardPage() {
             {isDemo && <DemoBanner />}
             <AddressBar />
             <WalletBalance refreshKey={balanceRefreshKey} />
+            {!isDemo && <OnboardingChecklist />}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <PositionPanel />
               <AlertRegistryPanel />
@@ -144,6 +147,11 @@ function HeroSection() {
       <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
         <span style={{ fontSize: '13px', color: 'var(--gray-09)' }}>↑ Connect your wallet, or</span>
         <DemoCta />
+      </div>
+
+      {/* Live social proof */}
+      <div style={{ marginTop: '20px' }}>
+        <HeroStats />
       </div>
 
       {/* Preview cards */}
