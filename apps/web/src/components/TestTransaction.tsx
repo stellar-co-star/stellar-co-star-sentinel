@@ -12,6 +12,7 @@ import { classifyError, txExplorerUrl, type AppError } from '@defirisk/core';
 import { StellarWalletsKit } from '@creit.tech/stellar-wallets-kit/sdk';
 import { useWallet } from '../wallet/WalletProvider';
 import { appConfig } from '../config';
+import { DEMO_WRITE_ERROR } from '../lib/demo';
 import { buildSelfPaymentTransaction, submitSignedTransaction } from '../lib/transactions';
 import { TX_STEPS, TxStatusPill, TxStepper } from './TxProgress';
 import { ErrorBanner } from './ErrorBanner';
@@ -20,7 +21,7 @@ type TxStatus = 'idle' | 'building' | 'signing' | 'submitting' | 'done' | 'error
 const PHASE_INDEX: Record<string, number> = { building: 0, signing: 1, submitting: 2 };
 
 export function TestTransaction({ onConfirmed }: { onConfirmed?: () => void }) {
-  const { address } = useWallet();
+  const { address, isDemo } = useWallet();
   const [status, setStatus] = useState<TxStatus>('idle');
   const [txHash, setTxHash] = useState<string | null>(null);
   const [error, setError] = useState<AppError | null>(null);
@@ -30,6 +31,7 @@ export function TestTransaction({ onConfirmed }: { onConfirmed?: () => void }) {
 
   async function run() {
     if (!address || busy) return;
+    if (isDemo) { setStatus('error'); setError(DEMO_WRITE_ERROR); return; }
     setError(null); setTxHash(null);
     try {
       setStatus('building');

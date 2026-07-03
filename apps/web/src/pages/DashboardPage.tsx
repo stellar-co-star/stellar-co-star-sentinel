@@ -12,7 +12,7 @@ import { Onboarding, useOnboarding } from '../components/Onboarding';
 import { useWallet } from '../wallet/WalletProvider';
 
 export function DashboardPage() {
-  const { address } = useWallet();
+  const { address, isDemo } = useWallet();
   const [balanceRefreshKey, setBalanceRefreshKey] = useState(0);
   const onboarding = useOnboarding();
 
@@ -48,6 +48,7 @@ export function DashboardPage() {
 
         {address && (
           <>
+            {isDemo && <DemoBanner />}
             <AddressBar />
             <WalletBalance refreshKey={balanceRefreshKey} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -139,10 +140,11 @@ function HeroSection() {
         ))}
       </div>
 
-      {/* Instruction */}
-      <p style={{ fontSize: '13px', color: 'var(--gray-09)', marginBottom: '0' }}>
-        ↑ Connect your wallet to get started
-      </p>
+      {/* CTAs */}
+      <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
+        <span style={{ fontSize: '13px', color: 'var(--gray-09)' }}>↑ Connect your wallet, or</span>
+        <DemoCta />
+      </div>
 
       {/* Preview cards */}
       <div style={{ marginTop: '60px', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '12px', textAlign: 'left' }}>
@@ -169,6 +171,37 @@ const PREVIEW_FEATURES = [
   { emoji: '🤖', title: 'AI Risk Copilot', desc: 'Plain-language risk explanations powered by LLM + RAG.', live: false },
   { emoji: '🔔', title: 'Alerts', desc: 'Telegram and email alerts when you approach liquidation.', live: false },
 ];
+
+/* ─── Demo mode ─── */
+function DemoCta() {
+  const { viewDemo } = useWallet();
+  return (
+    <button
+      type="button"
+      onClick={viewDemo}
+      style={{ display: 'inline-flex', alignItems: 'center', gap: '7px', padding: '9px 18px', borderRadius: 'var(--radius-sm)', background: 'var(--gray-03)', border: '1px solid var(--gray-06)', color: 'var(--gray-11)', font: '600 13px/1 var(--ff)', cursor: 'pointer', transition: 'all 120ms' }}
+      onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--gold)'; e.currentTarget.style.color = 'var(--gold)'; }}
+      onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--gray-06)'; e.currentTarget.style.color = 'var(--gray-11)'; }}
+    >
+      👁 Try the live demo (no wallet)
+    </button>
+  );
+}
+
+function DemoBanner() {
+  const { disconnect } = useWallet();
+  return (
+    <div className="animate-fade-in" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '11px 16px', marginBottom: '16px', background: 'var(--amber-bg)', border: '1px solid rgba(255,178,36,0.3)', borderRadius: 'var(--radius-sm)', fontSize: '13px', flexWrap: 'wrap' }}>
+      <span style={{ fontSize: '15px' }}>👁</span>
+      <span style={{ color: 'var(--gray-11)', fontWeight: 500, flex: 1, minWidth: '180px' }}>
+        You're exploring a <strong>live sample account</strong> read-only. Everything you see is real on-chain data. Connect your wallet to act.
+      </span>
+      <button type="button" onClick={() => void disconnect()} style={{ background: 'none', border: '1px solid rgba(255,178,36,0.4)', color: 'var(--amber)', borderRadius: 'var(--radius-sm)', padding: '6px 12px', fontWeight: 600, fontSize: '12px', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+        Exit demo
+      </button>
+    </div>
+  );
+}
 
 /* ─── Address bar ─── */
 function AddressBar() {

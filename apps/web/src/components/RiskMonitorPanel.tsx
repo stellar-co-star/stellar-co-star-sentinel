@@ -28,6 +28,7 @@ import {
 } from '@defirisk/core';
 import { appConfig } from '../config';
 import { track } from '../lib/analytics';
+import { DEMO_WRITE_ERROR } from '../lib/demo';
 import { submitSignedTransaction } from '../lib/transactions';
 import { truncateAddress, useWallet } from '../wallet/WalletProvider';
 import { ErrorBanner } from './ErrorBanner';
@@ -45,7 +46,7 @@ const LEVELS: Record<RiskLevel, { label: string; color: string; bg: string; bord
 };
 
 export function RiskMonitorPanel() {
-  const { address } = useWallet();
+  const { address, isDemo } = useWallet();
 
   const [hfPct, setHfPct] = useState('130');
   const [level, setLevel] = useState<RiskLevel | null>(null);
@@ -103,6 +104,7 @@ export function RiskMonitorPanel() {
   /* ── Write (publish assessment on-chain) ──────────────────────────────── */
   async function publish() {
     if (!address || busy || !validHf) return;
+    if (isDemo) { setWriteError(DEMO_WRITE_ERROR); setPhase('error'); return; }
     setWriteError(null);
     setTxHash(null);
     try {

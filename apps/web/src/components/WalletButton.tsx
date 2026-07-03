@@ -40,7 +40,7 @@ function ensureKitInitialised(): void {
 export function WalletButton() {
   // Address is kept in shared WalletProvider context, updated by the
   // STATE_UPDATED event that StellarWalletsKit fires after authModal / getAddress.
-  const { address } = useWallet();
+  const { address, isDemo, viewDemo, disconnect } = useWallet();
   const [connecting, setConnecting] = useState(false);
   const [hoverDisc, setHoverDisc] = useState(false);
   const [connectError, setConnectError] = useState<AppError | null>(null);
@@ -70,11 +70,10 @@ export function WalletButton() {
     }
   }
 
-  /** Disconnect from the currently active wallet. */
+  /** Disconnect from the wallet or exit demo mode (handled by the provider). */
   async function handleDisconnect() {
     try {
-      await StellarWalletsKit.disconnect();
-      // WalletProvider's DISCONNECT listener clears the shared address.
+      await disconnect();
     } catch (err) {
       console.error('[WalletButton] disconnect failed:', err);
     }
@@ -115,6 +114,15 @@ export function WalletButton() {
           {connecting ? <><SpinIcon />Connecting…</> : <><WalletIcon />Connect Wallet</>}
         </button>
 
+        <button
+          type="button"
+          onClick={viewDemo}
+          style={{ background: 'none', border: 'none', color: 'var(--gray-09)', cursor: 'pointer', fontSize: '12px', fontWeight: 600, padding: '2px 4px', textDecoration: 'underline', whiteSpace: 'nowrap' }}
+          title="Explore a live sample account without a wallet"
+        >
+          or try the live demo, no wallet →
+        </button>
+
         {connectError && (
           <span
             title={connectError.hint ?? connectError.raw}
@@ -131,33 +139,32 @@ export function WalletButton() {
   /* ── Connected ──────────────────────────────────────────────────────── */
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-      {/* Address chip */}
+      {/* Address / demo chip */}
       <div style={{
         display: 'inline-flex', alignItems: 'center', gap: '8px',
         padding: '8px 14px',
-        background: 'var(--gray-03)',
-        border: '1px solid var(--gray-06)',
+        background: isDemo ? 'var(--amber-bg)' : 'var(--gray-03)',
+        border: `1px solid ${isDemo ? 'rgba(255,178,36,0.35)' : 'var(--gray-06)'}`,
         borderRadius: 'var(--radius-sm)',
         font: '500 13px/1 var(--mono)',
-        color: 'var(--gray-12)',
+        color: isDemo ? 'var(--amber)' : 'var(--gray-12)',
         cursor: 'default',
         userSelect: 'none',
-      }}>
-        {/* Pulsing connected dot */}
+      }} title={isDemo ? `Live sample account ${address}` : address}>
         <span style={{ position: 'relative', width: '8px', height: '8px', flexShrink: 0 }}>
-          <span style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: 'var(--mint)', animation: 'ping 2s cubic-bezier(0,0,0.2,1) infinite', opacity: 0.5 }} />
-          <span style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: 'var(--mint)' }} />
+          <span style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: isDemo ? 'var(--amber)' : 'var(--mint)', animation: 'ping 2s cubic-bezier(0,0,0.2,1) infinite', opacity: 0.5 }} />
+          <span style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: isDemo ? 'var(--amber)' : 'var(--mint)' }} />
         </span>
-        {truncateAddress(address)}
+        {isDemo ? '👁 Demo' : truncateAddress(address)}
       </div>
 
-      {/* Disconnect button */}
+      {/* Disconnect / exit demo button */}
       <button
         type="button"
         onClick={() => void handleDisconnect()}
         onMouseEnter={() => setHoverDisc(true)}
         onMouseLeave={() => setHoverDisc(false)}
-        title="Disconnect"
+        title={isDemo ? 'Exit demo' : 'Disconnect'}
         style={{
           display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
           width: '36px', height: '36px',

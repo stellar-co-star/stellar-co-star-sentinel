@@ -31,6 +31,7 @@ import {
 } from '@defirisk/core';
 import { appConfig } from '../config';
 import { track } from '../lib/analytics';
+import { DEMO_WRITE_ERROR } from '../lib/demo';
 import { submitSignedTransaction } from '../lib/transactions';
 import { truncateAddress, useWallet } from '../wallet/WalletProvider';
 import { ErrorBanner } from './ErrorBanner';
@@ -43,7 +44,7 @@ const PRESETS_PCT = [110, 120, 150];
 const POLL_MS = 20_000;
 
 export function AlertRegistryPanel() {
-  const { address } = useWallet();
+  const { address, isDemo } = useWallet();
 
   const [onchainBps, setOnchainBps] = useState<number | null>(null);
   const [reading, setReading] = useState(false);
@@ -123,6 +124,7 @@ export function AlertRegistryPanel() {
 
   async function runWrite(kind: 'set' | 'remove') {
     if (!address || busy) return;
+    if (isDemo) { setError(DEMO_WRITE_ERROR); return; }
 
     let bps = 0;
     if (kind === 'set') {

@@ -32,6 +32,7 @@ import {
 } from '@defirisk/core';
 import { appConfig } from '../config';
 import { track } from '../lib/analytics';
+import { DEMO_WRITE_ERROR } from '../lib/demo';
 import { submitSignedTransaction } from '../lib/transactions';
 import { truncateAddress, useWallet } from '../wallet/WalletProvider';
 import { ErrorBanner } from './ErrorBanner';
@@ -43,7 +44,7 @@ const PHASE_INDEX: Record<string, number> = { building: 0, signing: 1, submittin
 const POLL_MS = 20_000;
 
 export function GuardianPanel() {
-  const { address } = useWallet();
+  const { address, isDemo } = useWallet();
 
   const [policy, setPolicy] = useState<GuardianPolicy | null>(null);
   const [reserve, setReserve] = useState<number>(0);
@@ -112,6 +113,7 @@ export function GuardianPanel() {
 
   async function run(kind: Action) {
     if (!address || busy) return;
+    if (isDemo) { setError(DEMO_WRITE_ERROR); setPhase('error'); return; }
     setError(null);
     setTxHash(null);
     setReleased(null);
