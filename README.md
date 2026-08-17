@@ -109,13 +109,13 @@ Lead with **free liquidation alerts** so every Blend borrower has a reason to sh
 
 ## User onboarding & feedback (Google Form + Excel)
 
-We collect user details and product ratings through a Google Form, export the responses to a spreadsheet, and analyse them to drive the [next-phase improvements](#growth--product-iteration).
+We collect user details and product ratings through a Google Form, export the responses to Excel, and analyse them to drive the [next-phase improvements](#growth--product-iteration). The full workflow, exact form fields, and an onboarding kit are in **[`docs/feedback/`](docs/feedback/README.md)**.
 
-- **Sign-up / feedback form:** _`<GOOGLE_FORM_LINK>`_ — collects wallet address, name, email and a product rating.
-- **Exported responses (Excel):** _`docs/feedback/responses.xlsx`_ — attached once the first cohort is in.
-- **Active-usage proof:** the in-app **Network Activity** dashboard shows the live unique-wallet and transaction counts, read directly from the deployed contracts' events — verifiable on-chain, not self-reported.
+- **Sign-up / feedback form:** _`<GOOGLE_FORM_LINK>`_ — collects name, email, wallet address, usage and a 1–5 rating (fields spec'd in [`docs/feedback/README.md`](docs/feedback/README.md)). Set as `VITE_FEEDBACK_URL` to embed it in the in-app **Feedback** button.
+- **Exported responses (Excel):** [`docs/feedback/responses.xlsx`](docs/feedback/) — committed once the first cohort is in; schema in [`responses-template.csv`](docs/feedback/responses-template.csv).
+- **Active-usage proof:** the in-app **Network Activity** dashboard shows live unique-wallet and transaction counts, read directly from the deployed contracts' events — verifiable on-chain, not self-reported. A form response's wallet address (Q3) is cross-checked against this.
 
-> Onboarding 50+ testnet users is in progress. The infrastructure that proves it (on-chain unique-wallet counting + the form + this Excel export) is built and live; the counts update automatically as users interact.
+> **Status:** the collection + proof infrastructure is built and live (Google-Form-embed via `VITE_FEEDBACK_URL`, on-chain unique-wallet counting, Excel export path). Onboarding the 50+ cohort and attaching the Excel export are the remaining human steps — see the [onboarding kit](docs/feedback/README.md#how-to-onboard-your-50-testnet-users).
 
 ---
 
