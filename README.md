@@ -451,3 +451,12 @@ multi-wallet support. Rust + Soroban SDK 26 for the two contracts. Vitest +
 Testing Library for frontend tests, `cargo test` for contracts, GitHub Actions
 for CI. The AI Risk Copilot layer (LLM + RAG over positions and Blend docs) is
 the next milestone.
+
+## Resolved Issues
+
+The following issues have been addressed in this release:
+
+- Added issue templates for bug reports and feature requests
+- Added contributing guidelines and CODEOWNERS
+- Improved repository documentation and onboarding
+
